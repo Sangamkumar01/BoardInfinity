@@ -5,7 +5,11 @@ import styled from 'styled-components';
 function Header({ props }) {
     return (
         <Container>
+
+
             <Title style={{ backgroundColor: props.color }}>{props.title}</Title>
+            {props.tasks.length}
+
             <Icons>
 
                 <BsThreeDots />

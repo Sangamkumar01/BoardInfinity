@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Section from "./components/Section";
 import styled from "styled-components";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 function App() {
   const intialsections = [
@@ -11,7 +13,7 @@ function App() {
     },
     {
       title: "In Progress",
-      tasks: ["Task 4", "Task 5", "Task 6"],
+      tasks: ["Task 4", "Task 6"],
       color: "#fbf0d4",
     },
     {
@@ -27,17 +29,35 @@ function App() {
       return updatedSections;
     });
   };
+  const moveTask = (
+    fromSectionIndex,
+    fromTaskIndex,
+    toSectionIndex,
+    toTaskIndex
+  ) => {
+    const updatedSections = [...sections];
+    const movedTask = updatedSections[fromSectionIndex].tasks.splice(
+      fromTaskIndex,
+      1
+    )[0];
+    updatedSections[toSectionIndex].tasks.splice(toTaskIndex, 0, movedTask);
+    setSections(updatedSections);
+  };
   const [sections, setSections] = useState(intialsections);
   return (
-    <Container>
-      {sections.map((section, index) => (
-        <Section
-          key={index}
-          section={section}
-          onAddNewCard={(newCard) => addNewCard(index, newCard)}
-        />
-      ))}
-    </Container>
+    <DndProvider backend={HTML5Backend}>
+      <Container>
+        {sections.map((section, index) => (
+          <Section
+            key={index}
+            section={section}
+            index={index}
+            onAddNewCard={(newCard) => addNewCard(index, newCard)}
+            moveTask={moveTask}
+          />
+        ))}
+      </Container>
+    </DndProvider>
   );
 }
 

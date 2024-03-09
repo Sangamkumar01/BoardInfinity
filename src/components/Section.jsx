@@ -6,25 +6,37 @@ import { IoIosAddCircle } from "react-icons/io";
 import Header from './Header';
 import NewCard from './NewCard';
 import Tasks from './Tasks';
-function Section({ section, onAddNewCard }) {
-    const [tasks, setTasks] = useState([]);
+function Section({ section, onAddNewCard, index, moveTask }) {
+    const [tasks, setTasks] = useState(section.tasks);
+
     const handleAddNewCard = (newCard) => {
         setTasks((prevTasks) => [...prevTasks, newCard]);
         onAddNewCard(newCard);
     };
+
+    const updateTasksOrder = (newTasks) => {
+        setTasks(newTasks);
+    };
+
     return (
         <Container>
             <Header props={section} />
-            {section.tasks.map((task, index) => (
-                <Tasks key={index} props={task} />
+            {tasks.map((task, taskIndex) => (
+                <Tasks
+                    key={taskIndex}
+                    props={task}
+                    index={taskIndex}
+                    moveTask={moveTask}
+                    updateTasksOrder={updateTasksOrder}
+                    sectionIndex={index}
+                />
             ))}
             <NewCard onAddNewCard={handleAddNewCard} />
         </Container>
-    )
+    );
 }
 
-export default Section
-
+export default Section;
 const Container = styled.div`
     display: flex;
     flex-direction: column; /* Added */
