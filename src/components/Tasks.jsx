@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
 import { MdEdit } from "react-icons/md";
+import { Link } from 'react-router-dom';
 import { MdDelete } from "react-icons/md";
 import { useDrag, useDrop } from 'react-dnd';
 
@@ -22,13 +23,15 @@ function Tasks({ props, index, moveTask, updateTasksOrder, sectionIndex }) {
     });
 
     return (
-        <Container ref={(node) => ref(drop(node))}>
-            <Title>{props}</Title>
-            <Icons>
-                <MdEdit />
-                <MdDelete />
-            </Icons>
-        </Container>
+        <Link to={`/task/${sectionIndex}/${index}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Container ref={(node) => ref(drop(node))}>
+                <Title>{props}</Title>
+                <Icons>
+                    <MdEdit />
+                    <MdDelete />
+                </Icons>
+            </Container>
+        </Link>
     );
 }
 

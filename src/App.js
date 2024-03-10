@@ -3,7 +3,10 @@ import Section from "./components/Section";
 import styled from "styled-components";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { useParams } from "react-router-dom";
 
+import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
+import TaskDetails from "./components/TaskDetails";
 function App() {
   const intialsections = [
     {
@@ -46,17 +49,37 @@ function App() {
   const [sections, setSections] = useState(intialsections);
   return (
     <DndProvider backend={HTML5Backend}>
-      <Container>
-        {sections.map((section, index) => (
-          <Section
-            key={index}
-            section={section}
-            index={index}
-            onAddNewCard={(newCard) => addNewCard(index, newCard)}
-            moveTask={moveTask}
-          />
-        ))}
-      </Container>
+      <Router>
+        <Container>
+          <Routes>
+            <Route
+              path="/"
+              exact
+              element={
+                <React.Fragment>
+                  {" "}
+                  {/* Wrap sections with React.Fragment */}
+                  {sections.map((section, index) => (
+                    <Section
+                      key={index}
+                      section={section}
+                      index={index}
+                      onAddNewCard={(newCard) => addNewCard(index, newCard)}
+                      moveTask={moveTask}
+                    />
+                  ))}
+                </React.Fragment>
+              }
+            />
+            <Route
+              path="/task/:sectionIndex/:taskIndex"
+              element={
+                <TaskDetails sections={sections} setSections={setSections} />
+              }
+            />
+          </Routes>
+        </Container>
+      </Router>
     </DndProvider>
   );
 }
